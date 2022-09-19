@@ -1,2 +1,2 @@
 # ATP2022
-repositório para algoritmos e tecnicas de programacão
+repositório para algoritmos e técnicas de programacão
