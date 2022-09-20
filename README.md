@@ -1,2 +1,6 @@
 # ATP2022
-repositório para algoritmos e técnicas de programacão
+Repositório para algoritmos e técnicas de programacão.
+
+Nome: Jorge Frederico Faria da Costa
+Nº: A84467
+
