@@ -1,1 +1,90 @@
+import random
 
+
+def jogo():
+
+    min=1
+    max=100
+    tentativas=0
+
+    print("Escolha modo de jogo:")
+    print("1 - Adivinhar numero")
+    print("2 - Escolher numero")
+
+    flag = False
+
+    while(flag==False):
+        modo = input("")
+
+        if (modo=='1' or modo=='2'):
+            flag = True
+            print("")
+        else:
+            print("Modo de jogo inválido, volte a escolher:")
+
+    resultado = False
+    
+    if(modo=='1'):
+        numero = random.randint(min,max)
+
+        while(resultado==False):
+            print("Adivinhe o numero:")
+            numPlayer = int(input())
+            tentativas+=1
+
+            if (numero == numPlayer):
+                print("Acertou no numero" ,numero, "e demorou", tentativas, "tentativas" )
+                resultado = True
+
+            elif (numero>numPlayer):
+                print("O numero escolhido é pequeno: ", numPlayer)
+
+            else:
+                print("O numero escolhido é grande: ", numPlayer)
+            
+            print("")
+
+
+    if (modo=='2'):
+        print("Escolha um numero de 1 a 100:")
+        numero = 0
+
+        while(numero<min or numero>max):
+            numero = int(input("Numero:"))
+
+            if (numero<min or numero>max):
+                print("Numero inválido, escolha um numero de 1 a 100:")
+    
+            
+        while(resultado==False):
+            guess = (max+min)//2
+
+            print("O numero certo é ",guess, "?")
+            print("")
+            print("Resposta:")
+            print("-1 é menor")
+            print("0 é igual")
+            print("1 é maior")
+            resposta = int(input())
+
+            if (resposta==0):
+                tentativas+=1
+                resultado = True
+                print("Acertou no numero" ,guess, "e demorou", tentativas, "tentativas")
+            
+            elif (resposta==-1):
+                tentativas+=1
+                max = guess
+                
+            
+            elif (resposta==1):
+                tentativas+=1
+                min = guess
+
+            else:
+                print("Input inválido")
+                
+            print("")
+
+            
+jogo()
