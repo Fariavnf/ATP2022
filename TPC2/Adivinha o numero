@@ -47,7 +47,7 @@ def jogo():
 
     if (modo=='2'):
         print("Escolha um numero de", min, "a", max)
-        numero = 0
+        numero = -1
 
         while(numero<min or numero>max):
             numero = int(input("Numero:"))
