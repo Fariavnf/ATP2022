@@ -34,7 +34,7 @@ def jogo():
                     print(f"Numero inválido, escolha um numero de {min} a {max}")
                     continue
 
-                if numero < min or numero > max:
+                if numPlayer < min or numPlayer > max:
                     print(f"Numero inválido, escolha um numero de {min} a {max}")
                     continue
                 else:
