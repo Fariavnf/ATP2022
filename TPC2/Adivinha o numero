@@ -9,15 +9,14 @@ def jogo():
     print("Escolha modo de jogo:")
     print("1 - Adivinhar numero")
     print("2 - Escolher numero")
-
-    while True:
+    flag1 = True
+    while flag1:
         modo = input()
 
         if modo == '1' or modo == '2':
-            break
+            flag1 = False
         else:
             print("Modo de jogo inválido, volte a escolher:")
-            continue
 
     resultado = False
 
@@ -25,20 +24,19 @@ def jogo():
         numero = random.randint(min, max)
 
         while not resultado:
-
-            while True:
+            flag = True
+            while flag:
                 try:
                     print(f"Escolha um numero de {min} a {max}")
                     numPlayer = int(input())
                 except ValueError:
-                    print(f"Numero inválido, escolha um numero de {min} a {max}")
+                    print(f"Numero inválido")
                     continue
 
                 if numPlayer < min or numPlayer > max:
-                    print(f"Numero inválido, escolha um numero de {min} a {max}")
-                    continue
+                    print(f"Numero inválido")
                 else:
-                    break
+                    flag = False
 
             tentativas += 1
 
@@ -56,8 +54,8 @@ def jogo():
 
     if modo == '2':
         print(f"Escolha um numero de {min} a {max}")
-
-        while True:
+        flag2 = True
+        while flag2:
             try:
                 numero = int(input("Numero:"))
             except ValueError:
@@ -66,9 +64,8 @@ def jogo():
 
             if numero < min or numero > max:
                 print(f"Numero inválido, escolha um numero de {min} a {max}")
-                continue
             else:
-                break
+                flag2 = False
 
         while not resultado:
             guess = (max + min) // 2
