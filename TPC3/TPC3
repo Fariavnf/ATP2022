@@ -126,11 +126,15 @@ def estaOrdenadaCD(lista, ordem):
 
 
 def procurarElem(lista, elem):
+    flag = True
+    i = 0
     pos = -1
 
-    for idx, num in enumerate(lista):
-        if num == elem:
-            pos = idx
+    while flag and i < len(lista):
+        if lista[i] == elem:
+            pos = i
+            flag = False
+        i += 1
 
     return pos
 
