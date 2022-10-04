@@ -106,31 +106,18 @@ def menorLista(lista):
     return menor
 
 
-def estaOrdenada(lista):
-    ordenado = True
-    i = 1
-
-    if len(lista) > 1:
-        while i < len(lista):
-            if lista[i] < lista[i - 1]:
-                ordenado = False
-            i += 1
-
-    return ordenado
-
-
 def estaOrdenadaCD(lista, ordem):
     ordenado = True
     i = 1
 
     if len(lista) > 1:
         if ordem == "C":
-            while i < len(lista):
+            while ordenado and i < len(lista):
                 if lista[i] < lista[i - 1]:
                     ordenado = False
                 i += 1
         if ordem == "D":
-            while i < len(lista):
+            while ordenado and i < len(lista):
                 if lista[i] > lista[i - 1]:
                     ordenado = False
                 i += 1
@@ -221,6 +208,7 @@ def TPC3():
                         print(f"O número está na posição {pos + 1} da lista")
 
     print(f"Lista guardada: {lista}")
+
 
 
 TPC3()
