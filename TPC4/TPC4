@@ -1,0 +1,243 @@
+def validarModo():
+    flag = True
+
+    while flag:
+        try:
+            modo = int(input("->"))
+        except ValueError:
+            print("Modo inválido, volte a escolher:")
+            continue
+
+        if 0 <= modo <= 5:
+            flag = False
+        else:
+            print("Modo inválido, volte a escolher:")
+
+    return modo
+
+
+def validarLugares():
+    flag = True
+
+    while flag:
+        try:
+            print("Inseira o numero de lugares da sala:")
+            n = int(input("->"))
+        except ValueError:
+            print("Input inválido")
+            continue
+
+        if n >= 1:
+            flag = False
+        else:
+            print("Número de lugares inválido:")
+
+    return n
+
+
+def verificarFilme(cinema, filme):
+    flag = False
+    i = 0
+
+    while not flag and i < len(cinema):
+        sala = cinema[i]
+
+        if filme in sala:
+            flag = True
+
+        i += 1
+
+    return flag
+
+
+def escolherFilme(cinema):
+    flag = False
+
+    while not flag:
+        print("Insira o nome do filme:")
+        filme = (input("->"))
+
+        if verificarFilme(cinema, filme):
+            flag = True
+        else:
+            print("Filme não está em exibição")
+
+    return filme
+
+
+def escolherLugar(cinema, filme):
+    lugares = lugaresSala(cinema, filme)
+    flag = True
+
+    while flag:
+        try:
+            print("Escolha o lugar")
+            n = int(input("->"))
+        except ValueError:
+            print("Input inválido")
+            continue
+
+        if 0 < n <= lugares:
+            flag = False
+        else:
+            print("Número do lugar inválido:")
+
+    return n
+
+
+def lugaresSala(cinema, filme):
+    flag = True
+    lugares = 0
+    i = 0
+
+    while flag and i < len(cinema):
+        sala = cinema[i]
+
+        if filme in sala:
+            lugares = sala[0]
+            flag = False
+
+        i += 1
+
+    return lugares
+
+
+def lugaresOcupados(cinema, filme):
+    flag = True
+    lugaresOcu = 0
+    i = 0
+
+    while flag and i < len(cinema):
+        sala = cinema[i]
+
+        if filme in sala:
+            lugaresOcu = sala[1]
+            flag = False
+
+        i += 1
+
+    return lugaresOcu
+
+
+def addOcupado(cinema, filme, lugar):
+    flag = True
+    i = 0
+
+    while flag and i < len(cinema):
+        sala = cinema[i]
+
+        if filme in sala:
+            sala[1].append(lugar)
+            flag = False
+
+        i += 1
+
+    return cinema
+
+
+def listarFilmes(cinema):
+    print("Filmes em exibição:", end="\n\n")
+
+    for sala in cinema:
+        print(f"{sala[2]}")
+
+    print("")
+
+
+def listarSalas(cinema):
+
+    for sala in cinema:
+        print(f"Filme: {sala[2]}")
+        print(f"Lugares disponiveis: {sala[0] - len(sala[1])}")
+        print("----------------------------------------------")
+
+
+def listarLugaresOcu(lugares):
+    print("Lugares Ocupados:")
+
+    for n in lugares:
+        print(f"|{n}| ", end="")
+
+    print("")
+
+def criarSala():
+    lugares = validarLugares()
+
+    print("Insira o nome do filme:")
+    nome = input()
+
+    sala = (lugares, [], nome)
+
+    return sala
+
+
+def inserirSala(cinema, sala):
+    cinema.append(sala)
+
+    return cinema
+
+
+def lugarDisponivel(cinema, filme, lugar):
+    ocupado = False
+    lugaresOcu = lugaresOcupados(cinema, filme)
+
+    if lugar in lugaresOcu:
+        ocupado = True
+
+    return ocupado
+
+
+def menu():
+    cinema = [(150, [3, 5, 8, 2, 20, 21, 22, 23], "Twilight"), (120, [], "Hannibal")]
+    modo = -1
+
+    while modo != 0:
+        print("1 - Listar filmes")
+        print("2 - Listar informação sobre as salas")
+        print("3 - Verificar se lugar está ocupado")
+        print("4 - Comprar bilhete")
+        print("5 - Listar lugares Ocupados")
+        print("6 - Inserir sala")
+        print("0 - Sair", end="\n\n")
+
+        modo = validarModo()
+
+        match modo:
+            case 1:
+                listarFilmes(cinema)
+
+            case 2:
+                listarSalas(cinema)
+
+            case 3:
+                filme = escolherFilme(cinema)
+                lugar = escolherLugar(cinema, filme)
+                ocupado = lugarDisponivel(cinema, filme, lugar)
+
+                if ocupado:
+                    print("Lugar não está disponivel")
+                else:
+                    print("Lugar está disponivel")
+
+            case 4:
+                filme = escolherFilme(cinema)
+                lugar = escolherLugar(cinema, filme)
+                ocupado = lugarDisponivel(cinema, filme, lugar)
+
+                if not ocupado:
+                    cinema = addOcupado(cinema, filme, lugar)
+                else:
+                    print("Lugar não está disponivel")
+
+            case 5:
+                filme = escolherFilme(cinema)
+                lugaresOcu = lugaresOcupados(cinema, filme)
+                listarLugaresOcu(lugaresOcu)
+
+            case 6:
+                sala = criarSala()
+                cinema = inserirSala(cinema, sala)
+
+
+
+menu()
