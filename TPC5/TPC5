@@ -1,0 +1,221 @@
+def validarModo():
+    flag = True
+
+    while flag:
+        try:
+            modo = int(input("->"))
+        except ValueError:
+            print("Modo inválido, volte a escolher:")
+            continue
+
+        if 0 <= modo <= 5:
+            flag = False
+        else:
+            print("Modo inválido, volte a escolher:")
+
+    return modo
+
+
+def leBoletim():
+    boletim = []
+    fb = open("myheart.csv", "r")
+    line = fb.readline()
+
+    for line in fb:
+        line.rstrip("\n")
+        tuploTXT = line.split(",")
+        lastElem = tuploTXT[5].split("\n")
+
+        tuplo = (int(tuploTXT[0]), tuploTXT[1], int(tuploTXT[2]), int(tuploTXT[3]), int(tuploTXT[4]), lastElem[0])
+        boletim.append(tuplo)
+
+    fb.close()
+    return boletim
+
+
+def distSexo(boletim):
+    dic = {}
+
+    for patient in boletim:
+
+        if patient[5] == "1" and patient[1] in dic:
+            dic[patient[1]] += 1
+        elif patient[5] == "1" and patient[1] not in dic:
+            dic[patient[1]] = 1
+
+    return dic
+
+
+def distAge(boletim):
+    dic = {}
+
+    for patient in boletim:
+
+        if patient[5] == "1" and patient[0] in dic:
+            dic[patient[0]] += 1
+        elif patient[5] == "1" and patient[0] not in dic:
+            dic[patient[0]] = 1
+
+    return dic
+
+
+def distCol(boletim):
+    dic = {}
+
+    for patient in boletim:
+        if patient[5] == "1" and patient[3] in dic:
+            dic[patient[3]] += 1
+        elif patient[5] == "1" and patient[3] not in dic:
+            dic[patient[3]] = 1
+
+    return dic
+
+
+def tabelaSex(dic):
+    print(" Key   |   Value", end="\n\n")
+
+    for key in dic:
+        print(f"{key}       {dic[key]}")
+
+
+def tabelaAge(dic):
+    keys = list(dic.keys())
+    keys.sort()
+
+    i = keys[0]
+    idxKeysList = 0
+
+    print("Idade  |  Doentes")
+
+    while i <= keys[-1]:
+
+        lastDig = str(keys[idxKeysList])[-1]
+        jump = 1
+
+        match lastDig:
+            case "0" | "5":
+                sickTotal = dic.get(i, 0) + dic.get(i + 1, 0) + dic.get(i + 2, 0) + dic.get(i + 3, 0) + dic.get(i + 4,
+                                                                                                                0)
+                if i + 1 in dic:
+                    jump += 1
+                if i + 2 in dic:
+                    jump += 1
+                if i + 3 in dic:
+                    jump += 1
+                if i + 4 in dic:
+                    jump += 1
+
+                print(f"{i}-{i + 4}:      {sickTotal}")
+
+            case "1" | "6":
+                sickTotal = dic.get(i, 0) + dic.get(i + 1, 0) + dic.get(i + 2, 0) + dic.get(i + 3, 0)
+                if i + 1 in dic:
+                    jump += 1
+                if i + 2 in dic:
+                    jump += 1
+                if i + 3 in dic:
+                    jump += 1
+
+                print(f"{i - 1}-{i + 3}:      {sickTotal}")
+
+            case "2" | "7":
+                sickTotal = dic.get(i, 0) + dic.get(i + 1, 0) + dic.get(i + 2, 0)
+                if i + 1 in dic:
+                    jump += 1
+                if i + 2 in dic:
+                    jump += 1
+
+                print(f"{i - 2}-{i + 2}:      {sickTotal}")
+
+            case "3" | "8":
+                sickTotal = dic.get(i, 0) + dic.get(i + 1, 0)
+                if i + 1 in dic:
+                    jump += 1
+
+                print(f"{i - 3}-{i + 1}:      {sickTotal}")
+
+            case "4" | "9":
+                sickTotal = dic.get(i, 0)
+
+                print(f"{i - 4}-{i}:      {sickTotal}")
+
+        i += jump
+        idxKeysList += jump
+
+
+def tabelaCol(dic):
+    keys = list(dic.keys())
+    keys.sort()
+    i = 0
+
+    while i <= keys[-1]:
+        sickTotal = 0
+
+        for n in range(0, 10):
+            sickTotal += dic.get(i + n, 0)
+
+        print(f"{i}-{i + 9}:      {sickTotal}")
+        i += 10
+
+
+def aplicativo():
+    boletim = []
+    dicSex = {}
+    dicAge = {}
+    dicCol = {}
+    modo = -1
+
+    while modo != 0:
+
+        print("1 - Importar Dataset")
+        print("2 - Criar distribuição de doença por sexo")
+        print("3 - Criar distribuição de doença por escalões etários")
+        print("4 - Criar distribuição de doença por níveis de colesterol")
+        print("5 - Tabela de distribuição")
+        print("0 - Sair")
+
+        modo = validarModo()
+
+        if modo == 1:
+            boletim = leBoletim()
+
+        if modo > 1 and len(boletim) == 0:
+            print("Importe o Dataset")
+
+        elif modo > 1 and len(boletim) > 1:
+
+            match modo:
+                case 2:
+                    dicSex = distSexo(boletim)
+                case 3:
+                    dicAge = distAge(boletim)
+                case 4:
+                    dicCol = distCol(boletim)
+                case 5:
+                    print("Que distribuição quer tabelar?")
+                    print("2 - Distribuição por sexo")
+                    print("3 - Distribuição por escalões etários")
+                    print("4 - Distribuição por níveis de colesterol")
+                    dist = input("->")
+
+                    if dist == "2" and len(dicSex) > 0:
+                        tabelaSex(dicSex)
+
+                    elif dist == "3" and len(dicAge) > 0:
+                        tabelaAge(dicAge)
+
+                    elif dist == "4" and len(dicCol) > 0:
+                        tabelaCol(dicCol)
+
+                    elif (dist == "2" and len(dicSex) == 0) or (dist == "3" and len(dicAge) == 0) \
+                            or (dist == "4" and len(dicCol) == 0):
+
+                        print("Dicionário vazio")
+
+                    else:
+                        print("Input inválido")
+
+        print("")
+
+
+aplicativo()
