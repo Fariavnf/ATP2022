@@ -154,8 +154,9 @@ def tabelaCol(dic):
         for n in range(0, 10):
             sickTotal += dic.get(i + n, 0)
 
-        print(f"{i}-{i + 9}:      {sickTotal}")
-        i += 10
+        if sickTotal != 0:
+            print(f"{i}-{i + 9}:      {sickTotal}")
+            i += 10
 
 
 def aplicativo():
