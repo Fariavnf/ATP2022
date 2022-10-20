@@ -1,3 +1,5 @@
+import time
+
 def validarModo():
     flag = True
 
@@ -79,84 +81,65 @@ def tabelaSex(dic):
 
 
 def tabelaAge(dic):
-    keys = list(dic.keys())
-    keys.sort()
 
-    i = keys[0]
-    idxKeysList = 0
-
-    print("Idade  |  Doentes")
-
-    while i <= keys[-1]:
-
-        lastDig = str(keys[idxKeysList])[-1]
-        jump = 1
-
-        match lastDig:
-            case "0" | "5":
-                sickTotal = dic.get(i, 0) + dic.get(i + 1, 0) + dic.get(i + 2, 0) + dic.get(i + 3, 0) + dic.get(i + 4,
-                                                                                                                0)
-                if i + 1 in dic:
-                    jump += 1
-                if i + 2 in dic:
-                    jump += 1
-                if i + 3 in dic:
-                    jump += 1
-                if i + 4 in dic:
-                    jump += 1
-
-                print(f"{i}-{i + 4}:      {sickTotal}")
-
-            case "1" | "6":
-                sickTotal = dic.get(i, 0) + dic.get(i + 1, 0) + dic.get(i + 2, 0) + dic.get(i + 3, 0)
-                if i + 1 in dic:
-                    jump += 1
-                if i + 2 in dic:
-                    jump += 1
-                if i + 3 in dic:
-                    jump += 1
-
-                print(f"{i - 1}-{i + 3}:      {sickTotal}")
-
-            case "2" | "7":
-                sickTotal = dic.get(i, 0) + dic.get(i + 1, 0) + dic.get(i + 2, 0)
-                if i + 1 in dic:
-                    jump += 1
-                if i + 2 in dic:
-                    jump += 1
-
-                print(f"{i - 2}-{i + 2}:      {sickTotal}")
-
-            case "3" | "8":
-                sickTotal = dic.get(i, 0) + dic.get(i + 1, 0)
-                if i + 1 in dic:
-                    jump += 1
-
-                print(f"{i - 3}-{i + 1}:      {sickTotal}")
-
-            case "4" | "9":
-                sickTotal = dic.get(i, 0)
-
-                print(f"{i - 4}-{i}:      {sickTotal}")
-
-        i += jump
-        idxKeysList += jump
-
-
-def tabelaCol(dic):
     keys = list(dic.keys())
     keys.sort()
     i = 0
 
-    while i <= keys[-1]:
+    print("Idade  |  Doentes")
+
+    while i < len(keys):
         sickTotal = 0
+        count = 0
+        age = keys[i]
+        digit = int(((str(age))[-1]))
 
-        for n in range(0, 10):
-            sickTotal += dic.get(i + n, 0)
+        if 0 <= digit <= 4:
 
-        if sickTotal != 0:
-            print(f"{i}-{i + 9}:      {sickTotal}")
-        i += 10
+            for n1 in range(0, 5-digit):
+                temp = dic.get(age + n1, 0)
+
+                if temp != 0:
+                    sickTotal += temp
+                    count += 1
+
+            print(f"{age - digit}-{age + (4 - digit)}:     {sickTotal}")
+
+        elif 5 <= digit <= 9:
+
+            for n2 in range(0, 10-digit):
+                temp = dic.get(age + n2, 0)
+
+                if temp != 0:
+                    sickTotal += temp
+                    count += 1
+
+            print(f"{age - (digit - 5)}-{age + (9 - digit)}:     {sickTotal}")
+
+        i += count
+
+
+def tabelaCol(dic):
+
+    keys = list(dic.keys())
+    keys.sort()
+    i = 0
+
+    while i < len(keys):
+        sickTotal = 0
+        count = 0
+        col = keys[i]
+        digit = int(((str(col))[-1]))
+
+        for n in range(0, 10-digit):
+            temp = dic.get(col + n, 0)
+
+            if temp != 0:
+                sickTotal += temp
+                count += 1
+
+        print(f"{col-digit}-{col + (10 - digit)}:      {sickTotal}")
+        i += count
 
 
 def aplicativo():
