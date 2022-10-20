@@ -156,7 +156,7 @@ def tabelaCol(dic):
 
         if sickTotal != 0:
             print(f"{i}-{i + 9}:      {sickTotal}")
-            i += 10
+        i += 10
 
 
 def aplicativo():
